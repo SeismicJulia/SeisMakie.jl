@@ -1,0 +1,3 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+SeisMakie = "1618359f-28d0-421c-9c3d-0705aaf8cc0d"

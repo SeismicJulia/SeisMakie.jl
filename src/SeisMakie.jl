@@ -7,26 +7,33 @@ module SeisMakie
     using FFTW
 
     include("Recipes/SeisWiggleRecipe.jl")
-    include("Recipes/SeisColorRecipe.jl")
+    include("Recipes/SeisImageRecipe.jl")
     include("Recipes/SeisOverlayRecipe.jl")
+    include("Recipes/SeisAmplitudeRecipe.jl")
+    include("Recipes/SeisFKRecipe.jl")
 
-    include("SeisWiggle.jl")
-    include("SeisOverlay.jl")
-    include("SeisColor.jl")
     include("SeisDifference.jl")
-
 
     include("SeisPlotFK.jl")
     include("SeisPlotTX.jl")
+    include("SeisPlotAmplitude.jl")
 
     include("Util.jl")
-
-    export SeisWiggle
-    export SeisColor
-    export SeisOverlay
+  
+    export seisamplitude
+    export seisamplitude!
+    export seisfk
+    export seisfk!
+    export seisimage
+    export seisimage!
+    export seisoverlay 
+    export seisoverlay!
+    export seiswiggle
+    export seiswiggle!
 
     export SeisDifference
     export SeisPlotTX
     export SeisPlotFK
+    export SeisPlotAmplitude
 
 end

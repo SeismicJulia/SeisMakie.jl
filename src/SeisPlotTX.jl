@@ -1,7 +1,7 @@
 """
     SeisPlotTX(d; <keyword arguments>)
 
-Plot time-space, 2D seismic data `d` with color, wiggles or overlay.
+Plot time-space, 2D seismic data `d` with image, wiggles or overlay.
 
 # Arguments:
 - `d::Matrix{<:AbstractFloat}`: the measured seismic traces. Number of columns corresponds to number
@@ -9,7 +9,7 @@ Plot time-space, 2D seismic data `d` with color, wiggles or overlay.
                                 amplitude was measured for each trace
 
 # Keyword Arguments:
-- `fig::Figure=nothing`: the figure we want to plot on. If not supplied, one will be created and returned.
+- `fig=nothing`: the figure we want to plot on. If not supplied, one will be created and returned.
 
 - `gx::Vector{<:Real}=nothing`: the real coordinates of the seismometers corresponding to the traces in d
 - `ox=0`: first point of x-axis.
@@ -26,26 +26,52 @@ Plot time-space, 2D seismic data `d` with color, wiggles or overlay.
 - `wiggle_trace_increment=1`: increment for wiggle traces.
 - `xcur=1.2`: wiggle excursion in traces corresponding to clip.
 
-- `colormap=:viridis`: the colormap to be used for color and overlay plots.
+- `cmap=:seismic`: the colormap to be used for image and overlay plots.
 
-- `style`: determines the type of plot. Can be either "wiggle"/"wiggles", "color", "overlay".
+- `style`: determines the type of plot. Can be either "wiggle"/"wiggles", "image", "overlay".
 
 Return the figure and axis corresponding to d.
 
 # Example
 ```julia
-julia> d = SeisLinearEvents(); SeisPlotTX(d);
+julia> d = SeisLinearEvents(); 
+julia> f, ax = SeisPlotTX(d);
 ```
 """
-function SeisPlotTX(d; style="color", kwargs...)
+function SeisPlotTX(d; 
+                    fig=nothing, gx=nothing, ox=0, dx=1, oy=0, dy=1, xcur=1.2, wiggle_trace_increment=1,
+                    pclip=98, vmin=nothing, vmax=nothing, 
+                    wiggle_line_color=:black, wiggle_fill_color=:black,trace_width=0.7, 
+                    cmap=:seismic, style="image")
+
+    if isnothing(fig)
+        fig = Figure()
+    end
+
+    ax = __create_axis(fig[1,1])
     
     if style == "overlay"
-        return SeisOverlay(d; kwargs...)
+        overlay = seisoverlay!(ax, d; ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, xcur=xcur,
+                                      wiggle_trace_increment=wiggle_trace_increment, wiggle_line_color=wiggle_line_color,
+                                      wiggle_fill_color=wiggle_fill_color, trace_width=trace_width, cmap=cmap)
+        
+        Colorbar(fig[1, 2], overlay)
     elseif style == "wiggles" || style == "wiggle"
-        return SeisWiggle(d; kwargs...)
-    else
-        return SeisColor(d; kwargs...)
+        if !isnothing(gx)
+            ox = gx[1]
+            dx = minimum([gx[i]-gx[i-1] for i = 2:length(gx)])
+        end
+
+        seiswiggle!(ax, d; gx=gx, ox=ox, dx=dx, oy=oy, dy=dy, xcur=xcur, wiggle_trace_increment=wiggle_trace_increment, 
+                           wiggle_line_color=wiggle_line_color, wiggle_fill_color=wiggle_fill_color,
+                           trace_width=trace_width)    
+    else        
+        img = seisimage!(ax, d; ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
+        Colorbar(fig[1,2], img)
     end
+
+    xlims!(ax, low=ox-dx, high=ox+size(d,2)*dx)
+    return fig, ax
 
 end
 

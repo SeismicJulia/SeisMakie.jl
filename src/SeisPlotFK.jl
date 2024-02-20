@@ -8,7 +8,7 @@ with color, wiggles or overlay.
 - `d::Matrix{<:AbstractFloat}`: 2D data to plot.
 
 # Keyword arguments:
-- `fig::Figure=nothing`: the figure we want to plot on. If not supplied, one will be created and returned.
+- `fig=nothing`: the figure we want to plot on. If not supplied, one will be created and returned.
 
 - `pclip=99.9`: percentile for determining clip.
 - `vmin=nothing`: minimum value used in colormapping data.
@@ -16,9 +16,7 @@ with color, wiggles or overlay.
 
 - `fmax=100`: maximum frequency for `"FK"` or `"Amplitude"` plot.
 
-- `ox=0`: first point of x-axis.
 - `dx=1`: increment of x-axis.
-- `oy=0`: first point of y-axis.
 - `dy=1`: increment of y-axis.
 
 - `cmap=:PuOr`: colormap for  `"color"` or `"overlay"` style.
@@ -27,10 +25,11 @@ Return the figure and axis corresponding to d.
 
 # Example
 ```julia
-julia> d = SeisLinearEvents(); SeisPlotFK(d);
+julia> d = SeisLinearEvents(); 
+julia> f, ax = SeisPlotFK(d);
 ```
 """
-function SeisPlotFK(d; fig=nothing, ox=0, dx=1, oy=0, dy=1, fmax=100,
+function SeisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
                     pclip=99.9, vmin=nothing, vmax=nothing, cmap=:PuOr)
 
     if isnothing(fig)
@@ -39,31 +38,7 @@ function SeisPlotFK(d; fig=nothing, ox=0, dx=1, oy=0, dy=1, fmax=100,
 
     ax = __create_axis(fig[1, 1])
 
-    dk = 1/dx/size(d, 2)
-    kmin = -dk*size(d, 2)/2
-    kmax =  dk*size(d, 2)/2
-
-    df = 1/dy/size(d, 1)
-    FMAX = df*size(d, 1)/2
-    if fmax > FMAX
-        fmax = FMAX
-    end
-    nf = convert(Int32, floor((size(d, 1)/2)*fmax/FMAX))
-    D = abs.(fftshift(fft(d)))
-    D = D[round(Int,end/2):round(Int,end/2)+nf, :]
-    if (isnothing(vmin) || isnothing(vmax))
-        a = 0.
-        if (pclip<=100)
-            b = quantile(abs.(D[:]), (pclip/100))
-        else
-            b = quantile(abs.(D[:]), 1)*pclip/100
-        end
-    else
-        a = vmin
-        b = vmax
-    end
-
-    image!(ax, (kmin, kmax), (0.0, 0.5), D', colorrange=(a, b), colormap=:PuOr)
+    seisfk!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
 
     ax.xlabel = "Wavenumber (1/m)"
     ax.ylabel = "Frequency (Hz)"

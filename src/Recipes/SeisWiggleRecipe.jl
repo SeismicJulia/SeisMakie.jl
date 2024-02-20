@@ -1,4 +1,37 @@
-@recipe(SeisWiggleBase, d) do scene
+"""
+    seiswiggle(d; <keyword arguments>)
+    seiswiggle!(ax, d; <keyword arguments>)
+
+Recipe to plot time-space, wiggle plot of 2D seismic data `d`.
+
+# Arguments:
+- `d::Matrix{<:AbstractFloat}`: the measured seismic traces. Number of columns corresponds to number
+                                of traces whereas number of rows corresponds to the number of times
+                                amplitude was measured for each trace
+
+# Keyword Arguments:
+- `gx::Vector{<:Real}=nothing`: the real coordinates of the seismometers corresponding to the traces in d
+- `ox=0`: first point of x-axis.
+- `dx=1`: increment of x-axis.
+- `oy=0`: first point of y-axis.
+- `dy=1`: increment of y-axis.
+
+- `wiggle_fill_color=:black`: color for filling the positive wiggles.
+- `wiggle_line_color=:black`: color for wiggles' lines.
+- `wiggle_trace_increment=1`: increment for wiggle traces.
+- `xcur=1.2`: wiggle excursion in traces.
+
+# Examples
+```julia
+julia> d = SeisLinearEvents();
+julia> f, ax, wp = seiswiggle(d)
+```
+```julia
+julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
+julia> wp = seiswiggle!(ax, d)
+```
+"""
+@recipe(SeisWiggle, d) do scene
     Attributes(
         wiggle_line_color = :black,
         wiggle_fill_color = :black,
@@ -14,13 +47,13 @@
 
         xcur = 1.2,
         wiggle_trace_increment = 1,
-        #wiggle_difference = 1,
+        wiggle_difference = 1,
 
         fillbands = true,
     )
 end
 
-function Makie.plot!(wp::SeisWiggleBase{<:Tuple{AbstractMatrix{<:Real}}})
+function Makie.plot!(wp::SeisWiggle{<:Tuple{AbstractMatrix{<:Real}}})
     
     d = wp.d
     gx = wp.gx

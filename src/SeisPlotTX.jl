@@ -59,7 +59,7 @@ function SeisPlotTX(d;
     elseif style == "wiggles" || style == "wiggle"
         if !isnothing(gx)
             ox = gx[1]
-            dx = minimum([gx[i]-gx[i-1] for i = 2:length(gx)])
+            dx = wiggle_trace_increment*minimum([gx[i]-gx[i-1] for i = 2:length(gx)])
         end
 
         seiswiggle!(ax, d; gx=gx, ox=ox, dx=dx, oy=oy, dy=dy, xcur=xcur, wiggle_trace_increment=wiggle_trace_increment, 

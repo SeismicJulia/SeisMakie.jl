@@ -47,7 +47,6 @@ julia> wp = seiswiggle!(ax, d)
 
         xcur = 1.2,
         wiggle_trace_increment = 1,
-        wiggle_difference = 1,
 
         fillbands = true,
     )
@@ -67,9 +66,8 @@ function Makie.plot!(wp::SeisWiggle{<:Tuple{AbstractMatrix{<:Real}}})
     xcur = wp.xcur[]
     wiggle_trace_increment = wp.wiggle_trace_increment[]
 
-
     if isnothing(gx[])
-        gx[] = [ox+(i-1)*dx for i in range(start=1, stop=size(d[], 2))]
+        gx[] = [ox+(i-1)*dx for i in 1:size(d[], 2)]        
     end
     
     traces = Observable(Vector{Point2f}[])
@@ -87,13 +85,21 @@ function Makie.plot!(wp::SeisWiggle{<:Tuple{AbstractMatrix{<:Real}}})
         z = zeros(length(size(d, 1)))
         scale = wiggle_trace_increment*dgx*xcur/max_perturb
 
-        for i = 1:wiggle_trace_increment:length(gx)
-            trace = Point2.(gx[i] .+ (scale .* d[:, i]), times)
-            pos_trace = Point2.(gx[i] .+ max.(scale .* d[:, i], 0), times)
-            zero_line = Point2.(gx[i] .+ z, times)
-            push!(traces[], trace)
-            push!(positive_traces[], pos_trace)
-            push!(zero_lines[], zero_line)
+        st = gx[1]
+        for i = 1:length(gx)
+            while gx[i] >= st+wiggle_trace_increment*dgx
+                st += wiggle_trace_increment*dgx
+            end
+            
+            if gx[i] >= st && gx[i] < st+wiggle_trace_increment*dgx
+                trace = Point2.(gx[i] .+ (scale .* d[:, i]), times)
+                pos_trace = Point2.(gx[i] .+ max.(scale .* d[:, i], 0), times)
+                zero_line = Point2.(gx[i] .+ z, times)
+                push!(traces[], trace)
+                push!(positive_traces[], pos_trace)
+                push!(zero_lines[], zero_line)
+                st += wiggle_trace_increment*dgx
+            end
         end
     end 
 

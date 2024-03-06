@@ -34,14 +34,14 @@ Return the figure and axis corresponding to d.
 
 # Example
 ```julia
-julia> d = SeisLinearEvents(); 
+julia> d = SeisLinearEvents();
 julia> f, ax = SeisPlotTX(d);
 ```
 """
-function SeisPlotTX(d; 
+function SeisPlotTX(d;
                     fig=nothing, gx=nothing, ox=0, dx=1, oy=0, dy=1, xcur=1.2, wiggle_trace_increment=1,
-                    pclip=98, vmin=nothing, vmax=nothing, 
-                    wiggle_line_color=:black, wiggle_fill_color=:black,trace_width=0.7, 
+                    pclip=98, vmin=nothing, vmax=nothing,
+                    wiggle_line_color=:black, wiggle_fill_color=:black,trace_width=0.7,
                     cmap=:seismic, style="image")
 
     if isnothing(fig)
@@ -49,12 +49,15 @@ function SeisPlotTX(d;
     end
 
     ax = __create_axis(fig[1,1])
-    
+
     if style == "overlay"
-        overlay = seisoverlay!(ax, d; ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, xcur=xcur,
-                                      wiggle_trace_increment=wiggle_trace_increment, wiggle_line_color=wiggle_line_color,
-                                      wiggle_fill_color=wiggle_fill_color, trace_width=trace_width, cmap=cmap)
-        
+        overlay = seisoverlay!(ax, d;
+                               ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, xcur=xcur,
+                               wiggle_trace_increment=wiggle_trace_increment,
+                               wiggle_line_color=wiggle_line_color,
+                               wiggle_fill_color=wiggle_fill_color,
+                               trace_width=trace_width, cmap=cmap)
+
         Colorbar(fig[1, 2], overlay)
     elseif style == "wiggles" || style == "wiggle"
         if !isnothing(gx)
@@ -62,10 +65,12 @@ function SeisPlotTX(d;
             dx = wiggle_trace_increment*minimum([gx[i]-gx[i-1] for i = 2:length(gx)])
         end
 
-        seiswiggle!(ax, d; gx=gx, ox=ox, dx=dx, oy=oy, dy=dy, xcur=xcur, wiggle_trace_increment=wiggle_trace_increment, 
-                           wiggle_line_color=wiggle_line_color, wiggle_fill_color=wiggle_fill_color,
-                           trace_width=trace_width)    
-    else        
+        seiswiggle!(ax, d; gx=gx, ox=ox, dx=dx, oy=oy, dy=dy, xcur=xcur,
+                    wiggle_trace_increment=wiggle_trace_increment,
+                    wiggle_line_color=wiggle_line_color,
+                    wiggle_fill_color=wiggle_fill_color,
+                    trace_width=trace_width)
+    else
         img = seisimage!(ax, d; ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
         Colorbar(fig[1,2], img)
     end

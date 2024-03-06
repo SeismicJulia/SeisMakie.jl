@@ -32,7 +32,7 @@ julia> img = seisimage!(ax, d)
 @recipe(SeisImage, d) do scene
     Attributes(
         ox = 0,
-        dx = 1, 
+        dx = 1,
         oy = 0,
         dy = 1,
 
@@ -45,23 +45,23 @@ julia> img = seisimage!(ax, d)
 end
 
 function Makie.plot!(img::SeisImage{<:Tuple{AbstractMatrix{<:Real}}})
-    
+
     if (isnothing(img.vmin[]) || isnothing(img.vmax))
         if (img.pclip[]<=100)
             a = -quantile(abs.(img.d[][:]), (img.pclip[]/100))
         else
             a = -quantile(abs.(img.d[][:]), 1)*img.pclip[]/100
         end
-            b = -a
+        b = -a
     else
         a = img.vmin[]
         b = img.vmax[]
     end
-    
+
     x = (img.ox[]-img.dx[], img.ox[]+size(img.d[],2)*img.dx[])
     y = (img.oy[], img.oy[]+size(img.d[],1)*img.dy[])
 
     image!(img, x, y, img.d[]', colorrange=(a, b), colormap=img.cmap[])
-    
+
     img
 end

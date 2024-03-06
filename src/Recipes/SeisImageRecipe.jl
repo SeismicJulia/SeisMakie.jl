@@ -58,7 +58,7 @@ function Makie.plot!(img::SeisImage{<:Tuple{AbstractMatrix{<:Real}}})
         b = img.vmax[]
     end
 
-    x = (img.ox[]-img.dx[], img.ox[]+size(img.d[],2)*img.dx[])
+    x = (img.ox[], img.ox[]+size(img.d[],2)*img.dx[])
     y = (img.oy[], img.oy[]+size(img.d[],1)*img.dy[])
 
     image!(img, x, y, img.d[]', colorrange=(a, b), colormap=img.cmap[])

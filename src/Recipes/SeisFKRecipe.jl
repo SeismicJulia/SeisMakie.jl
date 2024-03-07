@@ -36,14 +36,14 @@ julia> fk = seisfk!(ax, d)
 """
 @recipe(SeisFK, d) do scene
     Attributes(
-        dx=1, 
-        dy=1, 
+        dx=1,
+        dy=1,
         fmax=100,
 
-        pclip=99.9, 
-        vmin=nothing, 
-        vmax=nothing, 
-        
+        pclip=99.9,
+        vmin=nothing,
+        vmax=nothing,
+
         cmap=:PuOr
     )
 end
@@ -62,7 +62,7 @@ function Makie.plot!(fk::SeisFK{<:Tuple{AbstractMatrix{<:Real}}})
     nf = convert(Int32, floor((size(fk.d[], 1)/2)*fk.fmax[]/FMAX))
     D = abs.(fftshift(fft(fk.d[])))
     D = D[round(Int,end/2):round(Int,end/2)+nf, :]
-    
+
     if (isnothing(fk.vmin[]) || isnothing(fk.vmax[]))
         a = 0.
         if (fk.pclip[] <= 100)
@@ -76,5 +76,5 @@ function Makie.plot!(fk::SeisFK{<:Tuple{AbstractMatrix{<:Real}}})
     end
 
     image!(fk, (kmin, kmax), (0.0, fk.fmax[]), D', colorrange=(a, b), colormap=fk.cmap[])
-    
+
 end

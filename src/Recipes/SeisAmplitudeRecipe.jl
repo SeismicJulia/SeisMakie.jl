@@ -28,7 +28,7 @@ julia> amp = seisamplitude!(ax, d)
 """
 @recipe(SeisAmplitude, d) do scene
     Attributes(
-        fmax=100, 
+        fmax=100,
         dy=0.004,
 
         normalize=false,
@@ -39,7 +39,7 @@ julia> amp = seisamplitude!(ax, d)
 end
 
 function Makie.plot!(amp::SeisAmplitude{<:Tuple{AbstractMatrix{<:Real}}})
-    
+
     nx = size(amp.d[], 2)
     df = 1/amp.dy[]/size(amp.d[], 1)
     FMAX = df*size(amp.d[], 1)/2

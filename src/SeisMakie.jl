@@ -1,7 +1,5 @@
-
 module SeisMakie
 
-    # Write your package code here.
     using Makie
     using Statistics
     using FFTW
@@ -19,14 +17,14 @@ module SeisMakie
     include("SeisPlotAmplitude.jl")
 
     include("Util.jl")
-  
+
     export seisamplitude
     export seisamplitude!
     export seisfk
     export seisfk!
     export seisimage
     export seisimage!
-    export seisoverlay 
+    export seisoverlay
     export seisoverlay!
     export seiswiggle
     export seiswiggle!

@@ -37,13 +37,13 @@ Return the figure and 3 axes corresponding to d1, d2, d1-d2.
 
 # Example
 ```julia
-julia> d1 = SeisLinearEvents(); d2 = SeisLinearEvents(); 
+julia> d1 = SeisLinearEvents(); d2 = SeisLinearEvents();
 julia> f, ax1, ax2, ax_diff = SeisDifference(d1, d2);
 ```
 """
 function SeisDifference(d1, d2;
                         fig=nothing, ox=0, dx=1, oy=0, dy=1,  gx=nothing,
-                        pclip=98, vmin=nothing, vmax=nothing, wiggle_line_color=:black, 
+                        pclip=98, vmin=nothing, vmax=nothing, wiggle_line_color=:black,
                         wiggle_fill_color=:black, trace_width=0.7, cmap=:viridis, style="overlay", horizontal=true)
 
     if isnothing(fig)
@@ -68,9 +68,12 @@ function SeisDifference(d1, d2;
 
     for (i, ax) in enumerate(axes)
         xlims!(ax, low=ox-dx, high=ox+size(d1,2)*dx)
-        push!(plots, plotfunc(ax, data[i], ox=ox, dx=dx, oy=oy, dy=dy, gx=gx, pclip=pclip, vmin=vmin, vmax=vmax,
-                    wiggle_line_color=wiggle_line_color, wiggle_fill_color=wiggle_fill_color,
-                    trace_width=trace_width, cmap=cmap))
+        push!(plots, plotfunc(ax, data[i], ox=ox, dx=dx, oy=oy, dy=dy, gx=gx, pclip=pclip,
+                              vmin=vmin, vmax=vmax,
+                              wiggle_line_color=wiggle_line_color,
+                              wiggle_fill_color=wiggle_fill_color,
+                              trace_width=trace_width,
+                              cmap=cmap))
     end
 
     if !(style == "wiggles" || style == "wiggle")

@@ -38,21 +38,21 @@ julia> ov = seisoverlay!(ax, d)
     Attributes(
         trace_color = :black,
         trace_width = 0.7,
-    
+
         ox = 0,
         dx = 1,
-    
+
         oy = 0,
         dy = 1,
 
         xcur = 1,
         wiggle_trace_increment = 1,
-    
+
         pclip = 98,
         vmin = nothing,
         vmax = nothing,
-    
-        x = (1, 500), 
+
+        x = (1, 500),
         y = (1, 100),
 
         cmap = :seismic
@@ -61,11 +61,19 @@ end
 
 function Makie.plot!(overlay::SeisOverlay{<:Tuple{AbstractMatrix{<:Real}}})
 
-    seisimage!(overlay, overlay.d[], ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[], dy=overlay.dy[], colormap=overlay.cmap[],
-                    vmin=overlay.vmin[], vmax=overlay.vmax[], pclip=overlay.pclip[])
-    seiswiggle!(overlay, overlay.d[], ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[], dy=overlay.dy[],
-            xcur=overlay.xcur[], wiggle_trace_increment=overlay.wiggle_trace_increment[], trace_color=overlay.trace_color[], 
-            trace_width=overlay.trace_width[], fillbands=false)
+    seisimage!(overlay, overlay.d[], ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
+               dy=overlay.dy[],
+               colormap=overlay.cmap[],
+               vmin=overlay.vmin[],
+               vmax=overlay.vmax[],
+               pclip=overlay.pclip[])
+    seiswiggle!(overlay, overlay.d[], ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[],
+                dy=overlay.dy[],
+                xcur=overlay.xcur[],
+                wiggle_trace_increment=overlay.wiggle_trace_increment[],
+                trace_color=overlay.trace_color[],
+                trace_width=overlay.trace_width[],
+                fillbands=false)
 
     overlay
 end

@@ -63,7 +63,7 @@ function Makie.plot!(overlay::SeisOverlay{<:Tuple{AbstractMatrix{<:Real}}})
 
     seisimage!(overlay, overlay.d[], ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
                dy=overlay.dy[],
-               colormap=overlay.cmap[],
+               cmap=overlay.cmap[],
                vmin=overlay.vmin[],
                vmax=overlay.vmax[],
                pclip=overlay.pclip[])

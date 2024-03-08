@@ -61,13 +61,17 @@ end
 
 function Makie.plot!(overlay::SeisOverlay{<:Tuple{AbstractMatrix{<:Real}}})
 
-    seisimage!(overlay, overlay.d[], ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
+    # Clipping the negative values of the first wiggle
+    clipped_d = copy(overlay.d[])
+    clipped_d[:, 1] = max.(clipped_d[:, 1], 0)
+
+    seisimage!(overlay, clipped_d, ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
                dy=overlay.dy[],
-               colormap=overlay.cmap[],
+               cmap=overlay.cmap[],
                vmin=overlay.vmin[],
                vmax=overlay.vmax[],
                pclip=overlay.pclip[])
-    seiswiggle!(overlay, overlay.d[], ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[],
+    seiswiggle!(overlay, clipped_d, ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[],
                 dy=overlay.dy[],
                 xcur=overlay.xcur[],
                 wiggle_trace_increment=overlay.wiggle_trace_increment[],

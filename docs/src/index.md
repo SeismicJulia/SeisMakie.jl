@@ -4,7 +4,7 @@ CurrentModule = SeisMakie
 
 # SeisMakie
 
-Documentation for [SeisMakie](https://github.com/firasalchalabi/SeisMakie.jl).
+Documentation for [SeisMakie](https://github.com/SeismicJulia/SeisMakie.jl).
 
 ```@index
 ```

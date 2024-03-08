@@ -22,47 +22,63 @@ md"""
 # SeisMakie Showcase
 """
 
+# ╔═╡ 0d86b756-00a0-4484-8cee-2c0330ed438f
+
+
 # ╔═╡ 62e31cae-8deb-49a5-a6a1-54a772b48ff6
 md"""
 ## Initializing Data
+We first initialize some data to plot using functions from the SeisProcessing package.
 """
 
 # ╔═╡ e12751b3-0c8d-4655-b606-ae94d670b0d0
 begin
 	D1= SeisParabEvents()
 	D2= SeisLinearEvents()
-	
+
+	# D holds the trace data to be plotted
 	D = SeisAddNoise( D1 + 0.1*D2,2)
 	nothing
 end
 
-# ╔═╡ c25286cd-82b5-4725-96cc-4ab6ed0aa121
-begin
-	f1, ax1 = SeisPlotTX(D, style="wiggle")
-	f1
-end
-
-# ╔═╡ 26992493-fe50-4f59-8141-9ea9e8606516
-
-
 # ╔═╡ abe64b2a-f192-4e3b-ba3e-f26286b1a38d
 md"""
 ## SeisPlotTX
+SeisPlotTX allows us to plot either a wiggle, image, or overlay plot by specifying a `style` keyword. 
 """
 
 # ╔═╡ 0c3fcf92-8924-49ac-b487-a9dc372b2739
+md"""
+### Wiggle Plots
+"""
+
+# ╔═╡ 98b06ba3-7f03-4649-9627-33c6c7108141
+begin
+	function base_wiggle()
+		f, ax = SeisPlotTX(D, style="wiggles")
+		f
+	end
+	base_wiggle()
+end
+
+# ╔═╡ 2d59475e-728c-47ef-8e1c-13750857f6f8
 
 
 # ╔═╡ 25c72bf7-28ce-4f6b-b4c4-24be2f51a5f9
 begin
-	function start_and_interval()
+	function start_and_interval_wiggle()
 		ox, dx = 1000, 3
 		oy, dy = 500, 5
 		f, ax = SeisPlotTX(D, ox=ox, dx=dx, oy=oy, dy=dy, style="wiggle")
 		f
 	end
-	start_and_interval()
+	start_and_interval_wiggle()
 end
+
+# ╔═╡ 3595a191-495f-4263-8312-09e5d9c3d252
+md"""
+You can also provide real coordinates for trace positions in the form of an iterable of the same size as the trace matrix's second dimension n.
+"""
 
 # ╔═╡ 13980acc-8aa1-4d87-ab7e-c1a599e0483d
 begin
@@ -82,6 +98,11 @@ begin
 	real_coords()
 end
 
+# ╔═╡ f83180f3-157c-4f6c-9ed5-e41bf58ecc6d
+md"""
+You can also provide an excursion parameter if desired.
+"""
+
 # ╔═╡ 38fcc0c0-aaaa-4777-b67c-9cc5c9289a91
 begin
 	function excursion()
@@ -91,6 +112,9 @@ begin
 	excursion()
 end
 
+# ╔═╡ 7ac69279-0c12-45e5-ae6d-3a5ffa199dec
+
+
 # ╔═╡ 9a61b3d7-3a77-417d-b60b-7172050167e4
 begin
 	function trace_increment()
@@ -99,6 +123,11 @@ begin
 	end
 	trace_increment()
 end
+
+# ╔═╡ 63eb66c8-01eb-4e5b-bb3e-469de4eb0697
+md"""
+You can also change the colour scheme of wiggle plots, if desired.
+"""
 
 # ╔═╡ e6f38a8d-3db9-47ed-801e-2f434d2ef70c
 begin
@@ -111,17 +140,36 @@ end
 
 # ╔═╡ a66db96a-a6f1-4628-8a89-d8b2744eb3b5
 md"""
-### SeisColor
+### Image Plots
+"""
+
+# ╔═╡ 9179ea73-224c-4291-8cc5-4617524a0b81
+begin
+	function base_image()
+		f, ax = SeisPlotTX(D, style="image")
+		f
+	end
+	base_image()
+end
+
+# ╔═╡ 6f574b34-0f78-4b61-bac0-047eaad04e9c
+md"""
+You can also specify starting coordinates and intervals between adjacent samples for image plots.
 """
 
 # ╔═╡ 0a63424d-ab08-4dd4-bff8-5239ec312733
 begin
-	function base_color()
-		f, ax = SeisPlotTX(D, style="color")
+	function start_and_interval_image()
+		ox, dx = 50, 15
+		oy, dy = 200, 10
+		f, ax = SeisPlotTX(D, ox=ox, dx=dx, oy=oy, dy=dy, style="color")
 		f
 	end
-	base_color()
+	start_and_interval_image()
 end
+
+# ╔═╡ dc7c0906-269b-4f7f-ba11-f6ba4c4b40d6
+
 
 # ╔═╡ a546c9bc-7d20-4636-850f-f900194e97e8
 begin
@@ -133,6 +181,9 @@ begin
 	with_pclip()
 end
 
+# ╔═╡ bd81f1da-ac98-493f-8bc2-d5b1fa635473
+
+
 # ╔═╡ 9aff572e-683c-4085-878f-8c87c046db6f
 begin
 	function with_vmin_vmax()
@@ -142,10 +193,13 @@ begin
 	with_vmin_vmax()
 end
 
+# ╔═╡ c14d0c51-164b-41a2-a6df-befd3faf47f2
+
+
 # ╔═╡ 21cb4890-628a-4331-a163-77fd8b3c9e05
 begin
 	function with_different_colormap()
-		f, ax = SeisPlotTX(D, cmap=:seismic, style="color")
+		f, ax = SeisPlotTX(D, cmap=:PuOr, style="color")
 		f
 	end
 	with_different_colormap()
@@ -153,8 +207,8 @@ end
 
 # ╔═╡ 526287c9-8d28-4357-8313-6f7ba2f2f49b
 md"""
-### SeisOverlay
-You can use a combination of the arguments supplied to SeisWiggle and SeisColor
+### Overlay Plots
+You can use any combination of the arguments supplied to SeisWiggle and SeisColor. However, providing real coordinates as in wiggle plots is unsupported.
 """
 
 # ╔═╡ 312a0197-d66c-436d-9452-7c70e4cfaded
@@ -299,23 +353,33 @@ begin
 end
 
 # ╔═╡ Cell order:
+# ╟─90077fbb-2384-4d12-b51a-f52758049e49
+# ╠═0d86b756-00a0-4484-8cee-2c0330ed438f
 # ╠═93296b66-bca6-11ee-0787-99798c15a928
-# ╠═c25286cd-82b5-4725-96cc-4ab6ed0aa121
-# ╠═90077fbb-2384-4d12-b51a-f52758049e49
-# ╠═62e31cae-8deb-49a5-a6a1-54a772b48ff6
+# ╟─62e31cae-8deb-49a5-a6a1-54a772b48ff6
 # ╠═e12751b3-0c8d-4655-b606-ae94d670b0d0
-# ╠═26992493-fe50-4f59-8141-9ea9e8606516
-# ╠═abe64b2a-f192-4e3b-ba3e-f26286b1a38d
-# ╠═0c3fcf92-8924-49ac-b487-a9dc372b2739
+# ╟─abe64b2a-f192-4e3b-ba3e-f26286b1a38d
+# ╟─0c3fcf92-8924-49ac-b487-a9dc372b2739
+# ╠═98b06ba3-7f03-4649-9627-33c6c7108141
+# ╠═2d59475e-728c-47ef-8e1c-13750857f6f8
 # ╠═25c72bf7-28ce-4f6b-b4c4-24be2f51a5f9
+# ╠═3595a191-495f-4263-8312-09e5d9c3d252
 # ╠═13980acc-8aa1-4d87-ab7e-c1a599e0483d
+# ╟─f83180f3-157c-4f6c-9ed5-e41bf58ecc6d
 # ╠═38fcc0c0-aaaa-4777-b67c-9cc5c9289a91
+# ╠═7ac69279-0c12-45e5-ae6d-3a5ffa199dec
 # ╠═9a61b3d7-3a77-417d-b60b-7172050167e4
+# ╠═63eb66c8-01eb-4e5b-bb3e-469de4eb0697
 # ╠═e6f38a8d-3db9-47ed-801e-2f434d2ef70c
 # ╠═a66db96a-a6f1-4628-8a89-d8b2744eb3b5
+# ╠═9179ea73-224c-4291-8cc5-4617524a0b81
+# ╟─6f574b34-0f78-4b61-bac0-047eaad04e9c
 # ╠═0a63424d-ab08-4dd4-bff8-5239ec312733
+# ╠═dc7c0906-269b-4f7f-ba11-f6ba4c4b40d6
 # ╠═a546c9bc-7d20-4636-850f-f900194e97e8
+# ╠═bd81f1da-ac98-493f-8bc2-d5b1fa635473
 # ╠═9aff572e-683c-4085-878f-8c87c046db6f
+# ╠═c14d0c51-164b-41a2-a6df-befd3faf47f2
 # ╠═21cb4890-628a-4331-a163-77fd8b3c9e05
 # ╠═526287c9-8d28-4357-8313-6f7ba2f2f49b
 # ╠═312a0197-d66c-436d-9452-7c70e4cfaded

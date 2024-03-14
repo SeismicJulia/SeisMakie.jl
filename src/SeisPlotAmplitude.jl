@@ -23,6 +23,8 @@ Plot amplitude-frequency 2D seismic data `d`
 julia> d = SeisLinearEvents();
 julia> f, ax = SeisPlotAmplitude(d,100,0.004);
 ```
+
+Author: Firas Al Chalabi (2024)
 """
 function SeisPlotAmplitude(d::Array{<:Real, 2}; fig=nothing, ax=nothing, fmax=100, dy=0.004,
                            normalize=false, color=:black, label="")

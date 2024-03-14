@@ -28,6 +28,10 @@ julia> f, ax, img = seisimage(d)
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
 julia> img = seisimage!(ax, d)
 ```
+
+Author: Firas Al Chalabi (2024)
+Credits: Aaron Stanton (2015)
+- Most of the code in this file is taken from SeisPlot.jl written by Aaron Stanton.
 """
 @recipe(SeisImage, d) do scene
     Attributes(
@@ -46,7 +50,7 @@ end
 
 function Makie.plot!(img::SeisImage{<:Tuple{AbstractMatrix{<:Real}}})
 
-    if (isnothing(img.vmin[]) || isnothing(img.vmax))
+    if (isnothing(img.vmin[]) || isnothing(img.vmax[]))
         if (img.pclip[]<=100)
             a = -quantile(abs.(img.d[][:]), (img.pclip[]/100))
         else

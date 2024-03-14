@@ -28,6 +28,8 @@ Return the figure and axis corresponding to d.
 julia> d = SeisLinearEvents(); 
 julia> f, ax = SeisPlotFK(d);
 ```
+
+Author: Firas Al Chalabi (2024)
 """
 function SeisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
                     pclip=99.9, vmin=nothing, vmax=nothing, cmap=:PuOr)

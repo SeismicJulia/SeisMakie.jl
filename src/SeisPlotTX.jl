@@ -38,6 +38,8 @@ Return the figure and axis corresponding to d.
 julia> d = SeisLinearEvents();
 julia> f, ax = SeisPlotTX(d);
 ```
+
+Author: Firas Al Chalabi (2024)
 """
 function SeisPlotTX(d;
                     fig=nothing, gx=nothing, ox=0, dx=1, oy=0, dy=1, xcur=1.2, wiggle_trace_increment=1,

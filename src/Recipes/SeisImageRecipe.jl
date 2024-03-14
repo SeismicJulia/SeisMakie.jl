@@ -50,22 +50,57 @@ end
 
 function Makie.plot!(img::SeisImage{<:Tuple{AbstractMatrix{<:Real}}})
 
-    if (isnothing(img.vmin[]) || isnothing(img.vmax[]))
-        if (img.pclip[]<=100)
-            a = -quantile(abs.(img.d[][:]), (img.pclip[]/100))
+    transposed_d = Observable{Any}()
+
+    x = Observable{Any}()
+    y = Observable{Any}()
+
+    colorrange = Observable{Any}()
+
+
+    function update_plot(d, ox, oy, dx, dy, pclip, vmin, vmax)
+        transposed_d[] = d'
+
+        x[] = (ox, ox + size(d,2)*dx)
+        y[] = (oy, oy + size(d,2)*dy)
+
+        if (isnothing(vmin) || isnothing(vmax))
+            if (img.pclip[]<=100)
+                a = -quantile(abs.(d[:]), (pclip/100))
+            else
+                a = -quantile(abs.(d[:]), 1)*pclip/100
+            end
+            b = -a
         else
-            a = -quantile(abs.(img.d[][:]), 1)*img.pclip[]/100
+            a = vmin
+            b = vmax
         end
-        b = -a
-    else
-        a = img.vmin[]
-        b = img.vmax[]
+
+        colorrange[] = (a, b)
+
     end
 
-    x = (img.ox[], img.ox[]+size(img.d[],2)*img.dx[])
-    y = (img.oy[], img.oy[]+size(img.d[],1)*img.dy[])
+    Makie.Observables.onany(update_plot, img.d, img.ox, img.oy, img.dx, img.dy, img.pclip, img.vmin, img.vmax)
 
-    image!(img, x, y, img.d[]', colorrange=(a, b), colormap=img.cmap[])
+    update_plot(img.d[], img.ox[], img.oy[], img.dx[], img.dy[], img.pclip[], img.vmin[], img.vmax[])
+
+
+    # if (isnothing(img.vmin[]) || isnothing(img.vmax[]))
+    #     if (img.pclip[]<=100)
+    #         a = -quantile(abs.(img.d[][:]), (img.pclip[]/100))
+    #     else
+    #         a = -quantile(abs.(img.d[][:]), 1)*img.pclip[]/100
+    #     end
+    #     b = -a
+    # else
+    #     a = img.vmin[]
+    #     b = img.vmax[]
+    # end
+
+    # x = (img.ox[], img.ox[]+size(img.d[],2)*img.dx[])
+    # y = (img.oy[], img.oy[]+size(img.d[],1)*img.dy[])
+
+    image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap)
 
     img
 end

@@ -2,8 +2,7 @@
     seisfk(d; <keyword arguments>)
     seisfk!(ax, d; <keyword arguments>)
 
-Plot time-space, frequency-wavenumber or amplitude-frequency 2D seismic data `d`
-with color, wiggles or overlay.
+Plot frequency-wavenumber 2D seismic data `d`.
 
 # Arguments
 - `d::Matrix{<:AbstractFloat}`: 2D data to plot.
@@ -20,7 +19,7 @@ with color, wiggles or overlay.
 - `dx=1`: increment of x-axis.
 - `dy=1`: increment of y-axis.
 
-- `cmap=:PuOr`: colormap for  `"color"` or `"overlay"` style.
+- `cmap=:PuOr`: colormap
 
 Return the figure and axis corresponding to d.
 
@@ -33,6 +32,10 @@ julia> f, ax, fk = seisfk(d)
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
 julia> fk = seisfk!(ax, d)
 ```
+
+Author: Firas Al Chalabi (2024)
+Credits: Aaron Stanton (2015)
+- Most of the code in this file is taken from SeisPlot.jl written by Aaron Stanton.
 """
 @recipe(SeisFK, d) do scene
     Attributes(

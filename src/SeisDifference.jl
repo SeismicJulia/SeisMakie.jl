@@ -40,6 +40,8 @@ Return the figure and 3 axes corresponding to d1, d2, d1-d2.
 julia> d1 = SeisLinearEvents(); d2 = SeisLinearEvents();
 julia> f, ax1, ax2, ax_diff = SeisDifference(d1, d2);
 ```
+
+Author: Firas Al Chalabi (2024)
 """
 function SeisDifference(d1, d2;
                         fig=nothing, ox=0, dx=1, oy=0, dy=1,  gx=nothing,

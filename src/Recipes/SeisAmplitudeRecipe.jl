@@ -25,6 +25,10 @@ julia> f, ax, amp = seisamplitude(d)
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
 julia> amp = seisamplitude!(ax, d)
 ```
+
+Author: Firas Al Chalabi (2024)
+Credits: Aaron Stanton (2015)
+- Most of the code in this file is taken from SeisPlot.jl written by Aaron Stanton.
 """
 @recipe(SeisAmplitude, d) do scene
     Attributes(

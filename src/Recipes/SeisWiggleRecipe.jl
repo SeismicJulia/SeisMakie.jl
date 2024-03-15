@@ -30,6 +30,10 @@ julia> f, ax, wp = seiswiggle(d)
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
 julia> wp = seiswiggle!(ax, d)
 ```
+
+Author: Firas Al Chalabi (2024)
+Credits: Aaron Stanton (2015) 
+- The code in this file was inspired by some of Aaron Stanton's in SeisPlot.jl.
 """
 @recipe(SeisWiggle, d) do scene
     Attributes(

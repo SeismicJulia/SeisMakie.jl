@@ -10,28 +10,28 @@ module SeisMakie
     include("Recipes/SeisAmplitudeRecipe.jl")
     include("Recipes/SeisFKRecipe.jl")
 
-    include("SeisDifference.jl")
+    include("seisDifference.jl")
 
-    include("SeisPlotFK.jl")
-    include("SeisPlotTX.jl")
-    include("SeisPlotAmplitude.jl")
+    include("seisPlotFK.jl")
+    include("seisPlotTX.jl")
+    include("seisPlotAmplitude.jl")
 
     include("Util.jl")
 
-    export seisamplitude
-    export seisamplitude!
-    export seisfk
-    export seisfk!
-    export seisimage
-    export seisimage!
-    export seisoverlay
-    export seisoverlay!
-    export seiswiggle
-    export seiswiggle!
+    export seisamplitudeplot
+    export seisamplitudeplot!
+    export seisfkplot
+    export seisfkplot!
+    export seisimageplot
+    export seisimageplot!
+    export seisoverlayplot
+    export seisoverlayplot!
+    export seiswiggleplot
+    export seiswiggleplot!
 
-    export SeisDifference
-    export SeisPlotTX
-    export SeisPlotFK
-    export SeisPlotAmplitude
+    export seisDifference
+    export seisPlotTX
+    export seisPlotFK
+    export seisPlotAmplitude
 
 end

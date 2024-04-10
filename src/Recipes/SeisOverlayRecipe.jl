@@ -34,7 +34,7 @@ julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
 julia> ov = seisoverlay!(ax, d)
 ```
 """
-@recipe(SeisOverlay, d) do scene
+@recipe(SeisOverlayPlot, d) do scene
     Attributes(
         trace_color = :black,
         trace_width = 0.7,
@@ -59,19 +59,19 @@ julia> ov = seisoverlay!(ax, d)
     )
 end
 
-function Makie.plot!(overlay::SeisOverlay{<:Tuple{AbstractMatrix{<:Real}}})
+function Makie.plot!(overlay::SeisOverlayPlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     # Clipping the negative values of the first wiggle
     clipped_d = copy(overlay.d[])
     clipped_d[:, 1] = max.(clipped_d[:, 1], 0)
 
-    seisimage!(overlay, clipped_d, ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
+    seisimageplot!(overlay, clipped_d, ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
                dy=overlay.dy[],
                cmap=overlay.cmap[],
                vmin=overlay.vmin[],
                vmax=overlay.vmax[],
                pclip=overlay.pclip[])
-    seiswiggle!(overlay, clipped_d, ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[],
+    seiswiggleplot!(overlay, clipped_d, ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[],
                 dy=overlay.dy[],
                 xcur=overlay.xcur[],
                 wiggle_trace_increment=overlay.wiggle_trace_increment[],
@@ -82,9 +82,9 @@ function Makie.plot!(overlay::SeisOverlay{<:Tuple{AbstractMatrix{<:Real}}})
     overlay
 end
 
-function Makie.extract_colormap(pl::Plot{seisoverlay, Tuple{Matrix{Float64}}})
+function Makie.extract_colormap(pl::Plot{seisoverlayplot, Tuple{Matrix{Float64}}})
     # Return the ColorMapping of the seisimage plot
-    #   -  typeof(pl.plots[1]) = Plot{SeisMakie.seisimage, Tuple{Matrix{<:Real}}}
+    #   -  typeof(pl.plots[1]) = Plot{SeisMakie.seisimageplot, Tuple{Matrix{<:Real}}}
     #   -  typeof(pl.plots[1].plots[1]) = Image{Tuple{ClosedInterval{Float32}, ClosedInterval{Float32}, Matrix{Float32}}}
     return Makie.extract_colormap(pl.plots[1].plots[1])
 end

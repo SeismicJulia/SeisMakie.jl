@@ -41,7 +41,7 @@ julia> f, ax = SeisPlotTX(d);
 
 Author: Firas Al Chalabi (2024)
 """
-function SeisPlotTX(d;
+function seisPlotTX(d;
                     fig=nothing, gx=nothing, ox=0, dx=1, oy=0, dy=1, xcur=1.2, wiggle_trace_increment=1,
                     pclip=98, vmin=nothing, vmax=nothing,
                     wiggle_line_color=:black, wiggle_fill_color=:black,trace_width=0.7,
@@ -54,7 +54,7 @@ function SeisPlotTX(d;
     ax = __create_axis(fig[1,1])
 
     if style == "overlay"
-        overlay = seisoverlay!(ax, d;
+        overlay = seisoverlayplot!(ax, d;
                                ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, xcur=xcur,
                                wiggle_trace_increment=wiggle_trace_increment,
                                wiggle_line_color=wiggle_line_color,
@@ -71,7 +71,7 @@ function SeisPlotTX(d;
             dx = wiggle_trace_increment*minimum([gx[i]-gx[i-1] for i = 2:length(gx)])
         end
 
-        seiswiggle!(ax, d; gx=gx, ox=ox, dx=dx, oy=oy, dy=dy, xcur=xcur,
+        seiswiggleplot!(ax, d; gx=gx, ox=ox, dx=dx, oy=oy, dy=dy, xcur=xcur,
                     wiggle_trace_increment=wiggle_trace_increment,
                     wiggle_line_color=wiggle_line_color,
                     wiggle_fill_color=wiggle_fill_color,
@@ -80,7 +80,7 @@ function SeisPlotTX(d;
         xlims!(ax, low=ox-dx, high=ox+size(d,2)*dx)
 
     else
-        img = seisimage!(ax, d; ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
+        img = seisimageplot!(ax, d; ox=ox, dx=dx, oy=oy, dy=dy, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
         Colorbar(fig[1,2], img)
 
         xlims!(ax, low=ox, high=ox+size(d,2)*dx)

@@ -30,7 +30,7 @@ Author: Firas Al Chalabi (2024)
 Credits: Aaron Stanton (2015)
 - Most of the code in this file is taken from SeisPlot.jl written by Aaron Stanton.
 """
-@recipe(SeisAmplitude, d) do scene
+@recipe(SeisAmplitudePlot, d) do scene
     Attributes(
         fmax=100,
         dy=0.004,
@@ -42,7 +42,7 @@ Credits: Aaron Stanton (2015)
     )
 end
 
-function Makie.plot!(amp::SeisAmplitude{<:Tuple{AbstractMatrix{<:Real}}})
+function Makie.plot!(amp::SeisAmplitudePlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     nx = size(amp.d[], 2)
     df = 1/amp.dy[]/size(amp.d[], 1)

@@ -35,7 +35,7 @@ Author: Firas Al Chalabi (2024)
 Credits: Aaron Stanton (2015) 
 - The code in this file was inspired by some of Aaron Stanton's in SeisPlot.jl.
 """
-@recipe(SeisWiggle, d) do scene
+@recipe(SeisWigglePlot, d) do scene
     Attributes(
         wiggle_line_color = :black,
         wiggle_fill_color = :black,
@@ -56,7 +56,7 @@ Credits: Aaron Stanton (2015)
     )
 end
 
-function Makie.plot!(wp::SeisWiggle{<:Tuple{AbstractMatrix{<:Real}}})
+function Makie.plot!(wp::SeisWigglePlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     d = wp.d
     gx = wp.gx

@@ -37,7 +37,7 @@ Author: Firas Al Chalabi (2024)
 Credits: Aaron Stanton (2015)
 - Most of the code in this file is taken from SeisPlot.jl written by Aaron Stanton.
 """
-@recipe(SeisFK, d) do scene
+@recipe(SeisFKPlot, d) do scene
     Attributes(
         dx=1,
         dy=1,
@@ -51,7 +51,7 @@ Credits: Aaron Stanton (2015)
     )
 end
 
-function Makie.plot!(fk::SeisFK{<:Tuple{AbstractMatrix{<:Real}}})
+function Makie.plot!(fk::SeisFKPlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     dk = 1/fk.dx[]/size(fk.d[], 2)
     kmin = -dk*size(fk.d[], 2)/2

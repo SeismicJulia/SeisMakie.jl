@@ -1,5 +1,0 @@
-[deps]
-CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-SeisMakie = "1618359f-28d0-421c-9c3d-0705aaf8cc0d"
-SeisProcessing = "3ac90d68-5a11-50c7-932e-af3f40d97fdc"

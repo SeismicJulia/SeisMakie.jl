@@ -30,7 +30,7 @@ julia> f, ax = SeisPlotFK(d);
 
 Author: Firas Al Chalabi (2024)
 """
-function SeisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
+function seisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
                     pclip=99.9, vmin=nothing, vmax=nothing, cmap=:PuOr)
 
     if isnothing(fig)
@@ -39,7 +39,7 @@ function SeisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
 
     ax = __create_axis(fig[1, 1])
 
-    seisfk!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
+    seisfkplot!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
 
     ax.xlabel = "Wavenumber (1/m)"
     ax.ylabel = "Frequency (Hz)"

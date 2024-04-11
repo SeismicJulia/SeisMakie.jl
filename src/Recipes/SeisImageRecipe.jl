@@ -33,7 +33,7 @@ Author: Firas Al Chalabi (2024)
 Credits: Aaron Stanton (2015)
 - Most of the code in this file is taken from SeisPlot.jl written by Aaron Stanton.
 """
-@recipe(SeisImage, d) do scene
+@recipe(SeisImagePlot, d) do scene
     Attributes(
         ox = 0,
         dx = 1,
@@ -48,7 +48,7 @@ Credits: Aaron Stanton (2015)
     )
 end
 
-function Makie.plot!(img::SeisImage{<:Tuple{AbstractMatrix{<:Real}}})
+function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     transposed_d = Observable{Any}()
 

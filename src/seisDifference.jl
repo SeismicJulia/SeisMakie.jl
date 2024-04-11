@@ -43,7 +43,7 @@ julia> f, ax1, ax2, ax_diff = SeisDifference(d1, d2);
 
 Author: Firas Al Chalabi (2024)
 """
-function SeisDifference(d1, d2;
+function seisDifference(d1, d2;
                         fig=nothing, ox=0, dx=1, oy=0, dy=1,  gx=nothing,
                         pclip=98, vmin=nothing, vmax=nothing, wiggle_line_color=:black,
                         wiggle_fill_color=:black, trace_width=0.7, cmap=:viridis, style="overlay", horizontal=true)
@@ -53,11 +53,11 @@ function SeisDifference(d1, d2;
     end
 
     if style == "overlay"
-        plotfunc = seisoverlay!
+        plotfunc = seisoverlayplot!
     elseif style == "wiggles" || style == "wiggle"
-        plotfunc = seiswiggle!
+        plotfunc = seiswiggleplot!
     else
-        plotfunc = seiscolor!
+        plotfunc = seisimageplot!
     end
 
     if horizontal == true

@@ -26,7 +26,7 @@ julia> f, ax = SeisPlotAmplitude(d,100,0.004);
 
 Author: Firas Al Chalabi (2024)
 """
-function SeisPlotAmplitude(d::Array{<:Real, 2}; fig=nothing, ax=nothing, fmax=100, dy=0.004,
+function seisPlotAmplitude(d::Array{<:Real, 2}; fig=nothing, ax=nothing, fmax=100, dy=0.004,
                            normalize=false, color=:black, label="")
 
     if isnothing(fig)
@@ -41,7 +41,7 @@ function SeisPlotAmplitude(d::Array{<:Real, 2}; fig=nothing, ax=nothing, fmax=10
         ax.xgridvisible = true
     end
 
-    seisamplitude!(ax, d, fmax=fmax, dy=dy, normalize=normalize, color=color, label=label)
+    seisamplitudeplot!(ax, d, fmax=fmax, dy=dy, normalize=normalize, color=color, label=label)
 
     return fig, ax
 end

@@ -62,7 +62,7 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
         transposed_d[] = d'
 
         x[] = (ox, ox + size(d,2)*dx)
-        y[] = (oy, oy + size(d,2)*dy)
+        y[] = (oy, oy + size(d,1)*dy)
 
         if (isnothing(vmin) || isnothing(vmax))
             if (img.pclip[]<=100)

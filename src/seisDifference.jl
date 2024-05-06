@@ -69,7 +69,8 @@ function seisDifference(d1, d2;
     plots = []
 
     for (i, ax) in enumerate(axes)
-        xlims!(ax, low=ox-dx, high=ox+size(d1,2)*dx)
+        low = (style == "wiggles" || style == "wiggle") ? ox-dx : ox
+        xlims!(ax, low=low, high=ox+size(d1,2)*dx)
         push!(plots, plotfunc(ax, data[i], ox=ox, dx=dx, oy=oy, dy=dy, gx=gx, pclip=pclip,
                               vmin=vmin, vmax=vmax,
                               wiggle_line_color=wiggle_line_color,

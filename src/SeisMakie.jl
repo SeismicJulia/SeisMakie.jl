@@ -16,6 +16,8 @@ module SeisMakie
     include("seisPlotTX.jl")
     include("seisPlotAmplitude.jl")
 
+    include("makeAnimation.jl")
+
     include("Util.jl")
 
     export seisamplitudeplot
@@ -33,5 +35,7 @@ module SeisMakie
     export seisPlotTX
     export seisPlotFK
     export seisPlotAmplitude
+
+    export makeAnimation
 
 end

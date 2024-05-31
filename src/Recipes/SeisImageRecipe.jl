@@ -61,6 +61,7 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
     function update_plot(d, ox, oy, dx, dy, pclip, vmin, vmax)
         transposed_d[] = d'
 
+
         x[] = (ox, ox + size(d,2)*dx)
         y[] = (oy, oy + size(d,1)*dy)
 
@@ -84,23 +85,10 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     update_plot(img.d[], img.ox[], img.oy[], img.dx[], img.dy[], img.pclip[], img.vmin[], img.vmax[])
 
-
-    # if (isnothing(img.vmin[]) || isnothing(img.vmax[]))
-    #     if (img.pclip[]<=100)
-    #         a = -quantile(abs.(img.d[][:]), (img.pclip[]/100))
-    #     else
-    #         a = -quantile(abs.(img.d[][:]), 1)*img.pclip[]/100
-    #     end
-    #     b = -a
-    # else
-    #     a = img.vmin[]
-    #     b = img.vmax[]
-    # end
-
-    # x = (img.ox[], img.ox[]+size(img.d[],2)*img.dx[])
-    # y = (img.oy[], img.oy[]+size(img.d[],1)*img.dy[])
-
-    image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap)
-
+    if (colorrange[][1] != colorrange[][2])
+       image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap)
+    else
+        image!(img, x, y, transposed_d, colormap=img.cmap)
+    end
     img
 end

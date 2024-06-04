@@ -66,12 +66,7 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
         y[] = (oy, oy + size(d,1)*dy)
 
         if (isnothing(vmin) || isnothing(vmax))
-            if (img.pclip[]<=100)
-                a = -quantile(abs.(d[:]), (pclip/100))
-            else
-                a = -quantile(abs.(d[:]), 1)*pclip/100
-            end
-            b = -a
+            a, b = __calculate_pclip(d, pclip=pclip)
         else
             a = vmin
             b = vmax

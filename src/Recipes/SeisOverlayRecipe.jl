@@ -52,31 +52,36 @@ julia> ov = seisoverlay!(ax, d)
         vmin = nothing,
         vmax = nothing,
 
-        x = (1, 500),
-        y = (1, 100),
-
         cmap = :seismic
     )
 end
 
 function Makie.plot!(overlay::SeisOverlayPlot{<:Tuple{AbstractMatrix{<:Real}}})
+    clipped_d = Observable{Any}()
 
-    # Clipping the negative values of the first wiggle
-    clipped_d = copy(overlay.d[])
-    clipped_d[:, 1] = max.(clipped_d[:, 1], 0)
+    
+    function update_plot(d)
+        # Clipping the negative values of the first wiggle
+        clipped_d[] = copy(d)
+        clipped_d[][:, 1] = max.(clipped_d[][:, 1], 0)
+    end
 
-    seisimageplot!(overlay, clipped_d, ox=overlay.ox[], dx=overlay.dx[], oy=overlay.oy[],
-               dy=overlay.dy[],
-               cmap=overlay.cmap[],
-               vmin=overlay.vmin[],
-               vmax=overlay.vmax[],
-               pclip=overlay.pclip[])
-    seiswiggleplot!(overlay, clipped_d, ox=overlay.ox[],  dx=overlay.dx[], oy=overlay.oy[],
-                dy=overlay.dy[],
-                xcur=overlay.xcur[],
-                wiggle_trace_increment=overlay.wiggle_trace_increment[],
-                trace_color=overlay.trace_color[],
-                trace_width=overlay.trace_width[],
+    Makie.Observables.onany(update_plot, overlay.d)
+    
+    update_plot(overlay.d[])
+    
+    seisimageplot!(overlay, clipped_d, ox=overlay.ox, dx=overlay.dx, oy=overlay.oy,
+               dy=overlay.dy,
+               cmap=overlay.cmap,
+               vmin=overlay.vmin,
+               vmax=overlay.vmax,
+               pclip=overlay.pclip)
+    seiswiggleplot!(overlay, clipped_d, ox=overlay.ox,  dx=overlay.dx, oy=overlay.oy,
+                dy=overlay.dy,
+                xcur=overlay.xcur,
+                wiggle_trace_increment=overlay.wiggle_trace_increment,
+                trace_color=overlay.trace_color,
+                trace_width=overlay.trace_width,
                 fillbands=false)
 
     overlay

@@ -61,7 +61,6 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
     function update_plot(d, ox, oy, dx, dy, pclip, vmin, vmax)
         transposed_d[] = d'
 
-
         x[] = (ox, ox + size(d,2)*dx)
         y[] = (oy, oy + size(d,1)*dy)
 
@@ -79,9 +78,9 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
     Makie.Observables.onany(update_plot, img.d, img.ox, img.oy, img.dx, img.dy, img.pclip, img.vmin, img.vmax)
 
     update_plot(img.d[], img.ox[], img.oy[], img.dx[], img.dy[], img.pclip[], img.vmin[], img.vmax[])
-
+        
     if (colorrange[][1] != colorrange[][2])
-       image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap)
+        image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap)
     else
         image!(img, x, y, transposed_d, colormap=img.cmap)
     end

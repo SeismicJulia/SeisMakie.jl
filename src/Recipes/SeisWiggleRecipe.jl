@@ -64,24 +64,15 @@ function Makie.plot!(wp::SeisWigglePlot{<:Tuple{AbstractMatrix{<:Real}}})
     d = wp.d
     gx = wp.gx
 
-    ox = wp.ox[]
-    dx = wp.dx[]
-
-    oy = wp.oy[]
-    dy = wp.dy[]
-
-    xcur = wp.xcur[]
-    wiggle_trace_increment = wp.wiggle_trace_increment[]
-
-    if isnothing(gx[])
-        gx[] = [ox+(i-1)*dx for i in 1:size(d[], 2)]
-    end
-
     traces = []
     positive_traces = []
     zero_lines = []
 
-    function update_plot(d, gx)
+    function update_plot(d, gx, ox, dx, oy, dy, xcur, wiggle_trace_increment)
+
+        if isnothing(gx)
+            gx = [ox+(i-1)*dx for i in 1:size(d, 2)]
+        end
 
         dgx = minimum([gx[i]-gx[i-1] for i in 2:length(gx)])
         max_perturb = maximum(abs, d)
@@ -117,9 +108,9 @@ function Makie.plot!(wp::SeisWigglePlot{<:Tuple{AbstractMatrix{<:Real}}})
         
     end
 
-    Makie.Observables.onany(update_plot, d, gx)
+    Makie.Observables.onany(update_plot, d, gx, wp.ox, wp.dx, wp.oy, wp.dy, wp.xcur, wp.wiggle_trace_increment)
 
-    update_plot(d[], gx[])
+    update_plot(d[], gx[], wp.ox[], wp.dx[], wp.oy[], wp.dy[], wp.xcur[], wp.wiggle_trace_increment[])
 
     for i = 1:length(traces)
         if wp.fillbands[]

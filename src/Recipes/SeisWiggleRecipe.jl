@@ -31,6 +31,9 @@ julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
 julia> wp = seiswiggle!(ax, d)
 ```
 
+**Note: animations only work with this recipe if you update the observable `d` 
+with a matrix of the same size.**
+
 Author: Firas Al Chalabi (2024)
 Credits: Aaron Stanton (2015) 
 - The code in this file was inspired by some of Aaron Stanton's in SeisPlot.jl.
@@ -61,27 +64,15 @@ function Makie.plot!(wp::SeisWigglePlot{<:Tuple{AbstractMatrix{<:Real}}})
     d = wp.d
     gx = wp.gx
 
-    ox = wp.ox[]
-    dx = wp.dx[]
+    traces = []
+    positive_traces = []
+    zero_lines = []
 
-    oy = wp.oy[]
-    dy = wp.dy[]
+    function update_plot(d, gx, ox, dx, oy, dy, xcur, wiggle_trace_increment)
 
-    xcur = wp.xcur[]
-    wiggle_trace_increment = wp.wiggle_trace_increment[]
-
-    if isnothing(gx[])
-        gx[] = [ox+(i-1)*dx for i in 1:size(d[], 2)]
-    end
-
-    traces = Observable(Vector{Point2f}[])
-    positive_traces = Observable(Vector{Point2f}[])
-    zero_lines = Observable(Vector{Point2f}[])
-
-    function update_plot(d, gx)
-        empty!(traces[])
-        empty!(positive_traces[])
-        empty!(zero_lines[])
+        if isnothing(gx)
+            gx = [ox+(i-1)*dx for i in 1:size(d, 2)]
+        end
 
         dgx = minimum([gx[i]-gx[i-1] for i in 2:length(gx)])
         max_perturb = maximum(abs, d)
@@ -90,32 +81,43 @@ function Makie.plot!(wp::SeisWigglePlot{<:Tuple{AbstractMatrix{<:Real}}})
         scale = wiggle_trace_increment*dgx*xcur/max_perturb
 
         st = gx[1]
+        j = 1
         for i = 1:length(gx)
             while gx[i] >= st+wiggle_trace_increment*dgx
                 st += wiggle_trace_increment*dgx
             end
-
+    
             if gx[i] >= st && gx[i] < st+wiggle_trace_increment*dgx
                 trace = Point2.(gx[i] .+ (scale .* d[:, i]), times)
                 pos_trace = Point2.(gx[i] .+ max.(scale .* d[:, i], 0), times)
                 zero_line = Point2.(gx[i] .+ z, times)
-                push!(traces[], trace)
-                push!(positive_traces[], pos_trace)
-                push!(zero_lines[], zero_line)
+
+                if j <= length(traces)
+                    traces[j][] = trace
+                    positive_traces[j][] = pos_trace
+                    zero_lines[j][] = zero_line 
+                else
+                    push!(traces, Observable(trace))
+                    push!(positive_traces, Observable(pos_trace))
+                    push!(zero_lines, Observable(zero_line))
+                end
                 st += wiggle_trace_increment*dgx
+                j += 1
             end
         end
+        
     end
 
-    Makie.Observables.onany(update_plot, d, gx)
+    Makie.Observables.onany(update_plot, d, gx, wp.ox, wp.dx, wp.oy, wp.dy, wp.xcur, wp.wiggle_trace_increment)
 
-    update_plot(d[], gx[])
+    update_plot(d[], gx[], wp.ox[], wp.dx[], wp.oy[], wp.dy[], wp.xcur[], wp.wiggle_trace_increment[])
 
-    for i = 1:length(traces[])
+    for i = 1:length(traces)
         if wp.fillbands[]
-            band!(wp, zero_lines[][i], positive_traces[][i], color=wp.wiggle_fill_color)
+            band!(wp, zero_lines[i], positive_traces[i], color=wp.wiggle_fill_color)
         end
-        lines!(wp, traces[][i], color=wp.wiggle_line_color, linewidth=wp.trace_width)
+        lines!(wp, traces[i], color=wp.wiggle_line_color, linewidth=wp.trace_width)
     end
+
     wp
 end

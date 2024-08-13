@@ -80,4 +80,5 @@ function Makie.plot!(fk::SeisFKPlot{<:Tuple{AbstractMatrix{<:Real}}})
 
     image!(fk, (kmin, kmax), (0.0, fk.fmax[]), D', colorrange=(a, b), colormap=fk.cmap[])
 
+    return fk
 end

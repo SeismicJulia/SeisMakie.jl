@@ -24,7 +24,7 @@ Return the figure and axis corresponding to d.
 
 # Example
 ```julia
-julia> d = SeisLinearEvents(); 
+julia> d = SeisLinearEvents();
 julia> f, ax = SeisPlotFK(d);
 ```
 
@@ -39,7 +39,8 @@ function seisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
 
     ax = __create_axis(fig[1, 1])
 
-    seisfkplot!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
+    img = seisfkplot!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
+    Colorbar(fig[1,2], img)
 
     ax.xlabel = "Wavenumber (1/m)"
     ax.ylabel = "Frequency (Hz)"

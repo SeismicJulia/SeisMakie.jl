@@ -52,14 +52,17 @@ julia> ov = seisoverlay!(ax, d)
         vmin = nothing,
         vmax = nothing,
 
-        cmap = :seismic
+        cmap = :seismic,
+
+        transparency = false,
+        alpha = 1.0
     )
 end
 
 function Makie.plot!(overlay::SeisOverlayPlot{<:Tuple{AbstractMatrix{<:Real}}})
     clipped_d = Observable{Any}()
 
-    
+
     function update_plot(d)
         # Clipping the negative values of the first wiggle
         clipped_d[] = copy(d)
@@ -67,15 +70,17 @@ function Makie.plot!(overlay::SeisOverlayPlot{<:Tuple{AbstractMatrix{<:Real}}})
     end
 
     Makie.Observables.onany(update_plot, overlay.d)
-    
+
     update_plot(overlay.d[])
-    
+
     seisimageplot!(overlay, clipped_d, ox=overlay.ox, dx=overlay.dx, oy=overlay.oy,
                dy=overlay.dy,
                cmap=overlay.cmap,
                vmin=overlay.vmin,
                vmax=overlay.vmax,
-               pclip=overlay.pclip)
+               pclip=overlay.pclip,
+               alpha=overlay.alpha,
+               transparency=overlay.transparency)
     seiswiggleplot!(overlay, clipped_d, ox=overlay.ox,  dx=overlay.dx, oy=overlay.oy,
                 dy=overlay.dy,
                 xcur=overlay.xcur,

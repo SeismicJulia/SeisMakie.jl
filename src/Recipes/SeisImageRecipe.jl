@@ -45,6 +45,8 @@ Credits: Aaron Stanton (2015)
         vmax = nothing,
 
         cmap = :seismic,
+        transparency = false,
+        alpha = 1.0
     )
 end
 
@@ -78,11 +80,11 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
     Makie.Observables.onany(update_plot, img.d, img.ox, img.oy, img.dx, img.dy, img.pclip, img.vmin, img.vmax)
 
     update_plot(img.d[], img.ox[], img.oy[], img.dx[], img.dy[], img.pclip[], img.vmin[], img.vmax[])
-        
+
     if (colorrange[][1] != colorrange[][2])
-        image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap)
+        image!(img, x, y, transposed_d, colorrange=colorrange, colormap=img.cmap, alpha=img.alpha, transparency=img.transparency)
     else
-        image!(img, x, y, transposed_d, colormap=img.cmap)
+        image!(img, x, y, transposed_d, colormap=img.cmap, alpha=img.alpha, transparency=img.transparency)
     end
     img
 end

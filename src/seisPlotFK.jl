@@ -31,7 +31,8 @@ julia> f, ax = SeisPlotFK(d);
 Author: Firas Al Chalabi (2024)
 """
 function seisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
-                    pclip=99.9, vmin=nothing, vmax=nothing, cmap=:PuOr)
+                    pclip=99.9, vmin=nothing, vmax=nothing, cmap=:PuOr,
+                    transparency=false, alpha=1.0)
 
     if isnothing(fig)
         fig = Figure()
@@ -39,7 +40,7 @@ function seisPlotFK(d; fig=nothing, dx=1, dy=1, fmax=100,
 
     ax = __create_axis(fig[1, 1])
 
-    img = seisfkplot!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap)
+    img = seisfkplot!(ax, d, dx=dx, dy=dy, fmax=fmax, pclip=pclip, vmin=vmin, vmax=vmax, cmap=cmap, alpha=alpha, transparency=transparency)
     Colorbar(fig[1,2], img)
 
     ax.xlabel = "Wavenumber (1/m)"

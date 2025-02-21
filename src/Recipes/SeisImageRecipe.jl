@@ -63,8 +63,8 @@ function Makie.plot!(img::SeisImagePlot{<:Tuple{AbstractMatrix{<:Real}}})
     function update_plot(d, ox, oy, dx, dy, pclip, vmin, vmax)
         transposed_d[] = d'
 
-        x[] = (ox, ox + size(d,2)*dx)
-        y[] = (oy, oy + size(d,1)*dy)
+        x[] = (ox, ox + (size(d,2) - 1)*dx)
+        y[] = (oy, oy + (size(d,1) - 1)*dy)
 
         if (isnothing(vmin) || isnothing(vmax))
             a, b = __calculate_pclip(d, pclip=pclip)

@@ -1,6 +1,6 @@
 """
-    seisoverlay(d; <keyword arguments>)
-    seisoverlay!(ax, d; <keyword arguments>)
+    seisoverlayplot(d; <keyword arguments>)
+    seisoverlayplot!(ax, d; <keyword arguments>)
 
 Recipe to plot time-space, overlay plot of 2D seismic data `d`.
 
@@ -27,11 +27,11 @@ Recipe to plot time-space, overlay plot of 2D seismic data `d`.
 # Examples
 ```julia
 julia> d = SeisLinearEvents();
-julia> f, ax, ov = seisoverlay(d)
+julia> f, ax, ov = seisoverlayplot(d)
 ```
 ```julia
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
-julia> ov = seisoverlay!(ax, d)
+julia> ov = seisoverlayplot!(ax, d)
 ```
 """
 @recipe(SeisOverlayPlot, d) do scene

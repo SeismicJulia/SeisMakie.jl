@@ -1,6 +1,6 @@
 """
-    seisfk(d; <keyword arguments>)
-    seisfk!(ax, d; <keyword arguments>)
+    seisfkplot(d; <keyword arguments>)
+    seisfkplot!(ax, d; <keyword arguments>)
 
 Plot frequency-wavenumber 2D seismic data `d`.
 
@@ -26,11 +26,11 @@ Return the figure and axis corresponding to d.
 # Examples
 ```julia
 julia> d = SeisLinearEvents();
-julia> f, ax, fk = seisfk(d)
+julia> f, ax, fk = seisfkplot(d)
 ```
 ```julia
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
-julia> fk = seisfk!(ax, d)
+julia> fk = seisfkplot!(ax, d)
 ```
 
 Author: Firas Al Chalabi (2024)

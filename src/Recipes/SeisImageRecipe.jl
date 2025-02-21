@@ -1,6 +1,6 @@
 """
-    seisimage(d; <keyword arguments>);
-    seisimage!(ax, d; <keyword arguments>);
+    seisimageplot(d; <keyword arguments>);
+    seisimageplot!(ax, d; <keyword arguments>);
 
 Recipe to plot time-space, color plot of 2D seismic data `d`.
 
@@ -22,11 +22,11 @@ Recipe to plot time-space, color plot of 2D seismic data `d`.
 # Examples
 ```julia
 julia> d = SeisLinearEvents();
-julia> f, ax, img = seisimage(d)
+julia> f, ax, img = seisimageplot(d)
 ```
 ```julia
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
-julia> img = seisimage!(ax, d)
+julia> img = seisimageplot!(ax, d)
 ```
 
 Author: Firas Al Chalabi (2024)

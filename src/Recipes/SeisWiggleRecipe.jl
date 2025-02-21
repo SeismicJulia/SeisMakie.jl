@@ -1,6 +1,6 @@
 """
-    seiswiggle(d; <keyword arguments>)
-    seiswiggle!(ax, d; <keyword arguments>)
+    seiswiggleplot(d; <keyword arguments>)
+    seiswiggleplot!(ax, d; <keyword arguments>)
 
 Recipe to plot time-space, wiggle plot of 2D seismic data `d`.
 
@@ -24,11 +24,11 @@ Recipe to plot time-space, wiggle plot of 2D seismic data `d`.
 # Examples
 ```julia
 julia> d = SeisLinearEvents();
-julia> f, ax, wp = seiswiggle(d)
+julia> f, ax, wp = seiswiggleplot(d)
 ```
 ```julia
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
-julia> wp = seiswiggle!(ax, d)
+julia> wp = seiswiggleplot!(ax, d)
 ```
 
 **Note: animations only work with this recipe if you update the observable `d` 

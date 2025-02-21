@@ -1,6 +1,6 @@
 """
-    seisamplitude(d; <keyword arguments>)
-    seisamplitude!(ax, d; <keyword arguments>)
+    seisamplitudeplot(d; <keyword arguments>)
+    seisamplitudeplot!(ax, d; <keyword arguments>)
 
 Plot amplitude-frequency 2D seismic data `d`.
 
@@ -19,11 +19,11 @@ Plot amplitude-frequency 2D seismic data `d`.
 # Examples
 ```julia
 julia> d = SeisLinearEvents();
-julia> f, ax, amp = seisamplitude(d)
+julia> f, ax, amp = seisamplitudeplot(d)
 ```
 ```julia
 julia> d = SeisLinearEvents(); f = Figure(); ax = Axis(f)
-julia> amp = seisamplitude!(ax, d)
+julia> amp = seisamplitudeplot!(ax, d)
 ```
 
 Author: Firas Al Chalabi (2024)
